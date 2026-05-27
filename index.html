@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>BOPE V4</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="topbar">
+
+<div>
+<h1>BOPE V4</h1>
+<p>Institutional Momentum Scanner</p>
+</div>
+
+<button onclick="scanMarket()" class="scan-btn">
+SCAN MARKET
+</button>
+
+</div>
+
+<div class="stats">
+
+<div class="stat-box">
+<h2 id="scanned">0</h2>
+<p>Scanned</p>
+</div>
+
+<div class="stat-box">
+<h2 id="passed">0</h2>
+<p>Passed</p>
+</div>
+
+<div class="stat-box">
+<h2 id="watchlist">0</h2>
+<p>Watchlist</p>
+</div>
+
+<div class="stat-box">
+<h2 id="bestScore">0</h2>
+<p>Best Score</p>
+</div>
+
+</div>
+
+<div class="filters">
+
+<input type="number" value="5" placeholder="Min Price">
+
+<input type="number" value="25" placeholder="Max Price">
+
+<input type="number"
+value="1.2"
+step="0.1"
+placeholder="Min RVOL">
+
+<input type="number"
+value="45"
+placeholder="Min RSI">
+
+<input type="number"
+value="10"
+placeholder="Min Dollar Volume">
+
+</div>
+
+<div id="results" class="results-grid"></div>
+
+</div>
+
+<script src="scanner.js"></script>
+
+</body>
+
+</html>
