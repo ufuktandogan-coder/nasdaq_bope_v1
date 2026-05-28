@@ -8,6 +8,8 @@ app.use(express.static(__dirname));
 
 const PORT = process.env.PORT || 3000;
 
+const API_KEY = "9b341877fbe242ecba2aa8708b47f4ed";
+
 const stocks = [
 "SOFI",
 "PLTR",
@@ -32,32 +34,23 @@ const stocks = [
 
 app.get("/scan", async (req, res) => {
 
+try {
+
 const results = [];
 
 for (const symbol of stocks) {
 
 try {
 
-let price;
+const response = await fetch(
+`https://api.twelvedata.com/price?symbol=${symbol}&apikey=${API_KEY}`
+);
 
-// MANUAL LIVE PRICES
-const livePrices = {
+const data = await response.json();
 
-MARA: 5.50,
-CLSK: 18.17,
-SOFI: 14.32,
-PLTR: 127.40,
-ACHR: 10.21,
-RKLB: 31.80,
-IONQ: 40.12,
-RIOT: 10.55,
-HIMS: 58.22
+if (!data.price) continue;
 
-};
-
-price =
-livePrices[symbol] ||
-(Math.random() * 20 + 5);
+const price = parseFloat(data.price);
 
 const rsi =
 Math.floor(Math.random() * 25) + 50;
@@ -71,14 +64,14 @@ const volume =
 const score =
 Math.floor(
 rsi +
-(parseFloat(rvol) * 40)
+parseFloat(rvol) * 40
 );
 
 results.push({
 
 symbol,
 
-price: Number(price).toFixed(2),
+price: price.toFixed(2),
 
 rsi,
 
@@ -102,7 +95,7 @@ rr: "1:4.0"
 
 } catch (err) {
 
-console.log(err);
+console.log(symbol, err);
 
 }
 
@@ -122,6 +115,16 @@ results[0]?.score || 0,
 results
 
 });
+
+} catch (err) {
+
+console.log(err);
+
+res.status(500).json({
+error: "SERVER ERROR"
+});
+
+}
 
 });
 
