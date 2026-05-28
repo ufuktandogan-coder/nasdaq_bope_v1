@@ -42,30 +42,52 @@ for (const symbol of stocks) {
 
 try {
 
-const response = await fetch(
+// LIVE PRICE
+const priceResponse = await fetch(
 `https://api.twelvedata.com/price?symbol=${symbol}&apikey=${API_KEY}`
 );
 
-const data = await response.json();
+const priceData = await priceResponse.json();
 
-if (!data.price) continue;
+if (!priceData.price) continue;
 
-const price = parseFloat(data.price);
+const price =
+parseFloat(priceData.price);
+
+// REAL RSI
+const rsiResponse = await fetch(
+`https://api.twelvedata.com/rsi?symbol=${symbol}&interval=1day&time_period=14&apikey=${API_KEY}`
+);
+
+const rsiData = await rsiResponse.json();
+
+if (!rsiData.values) continue;
 
 const rsi =
-Math.floor(Math.random() * 25) + 50;
+parseFloat(rsiData.values[0].rsi);
 
+// RVOL
 const rvol =
 (Math.random() * 2 + 1).toFixed(1);
 
+// VOLUME
 const volume =
 (Math.random() * 300 + 20).toFixed(1) + "M";
 
+// SCORE
 const score =
 Math.floor(
 rsi +
 parseFloat(rvol) * 40
 );
+
+// FILTER
+if (
+rsi < 55 ||
+parseFloat(rvol) < 1.2
+) {
+continue;
+}
 
 results.push({
 
@@ -73,7 +95,7 @@ symbol,
 
 price: price.toFixed(2),
 
-rsi,
+rsi: rsi.toFixed(0),
 
 rvol,
 
