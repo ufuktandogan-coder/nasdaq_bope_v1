@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const axios = require("axios");
 
 const app = express();
 
@@ -14,18 +15,12 @@ const stocks = [
 "QS",
 "ACHR",
 "JOBY",
-"SERV",
-"BTDR",
-"SMR",
 "MARA",
 "CLSK",
 "CHPT",
-"ENVX",
-"ARQQ",
 "RKLB",
 "IONQ",
 "SOUN",
-"OPEN",
 "ASTS",
 "HIMS",
 "RIOT"
@@ -39,19 +34,15 @@ for (const symbol of stocks) {
 
 try {
 
-const response = await fetch(
+const response = await axios.get(
 `https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${API_KEY}`
 );
 
-const data = await response.json();
-
-console.log(symbol, data);
+const data = response.data;
 
 const price = data.c;
 
-if (!price || price <= 0) {
-continue;
-}
+if (!price) continue;
 
 const rsi =
 Math.floor(Math.random() * 30) + 50;
@@ -84,15 +75,13 @@ score
 
 } catch (err) {
 
-console.log("ERROR:", symbol, err.message);
+console.log("ERROR:", symbol);
 
 }
 
 }
 
 results.sort((a, b) => b.score - a.score);
-
-console.log("FINAL RESULTS:", results);
 
 res.json({
 scanned: stocks.length,
