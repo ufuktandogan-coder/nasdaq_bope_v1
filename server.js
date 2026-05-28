@@ -49,7 +49,7 @@ const price = data.c;
 
 if (!price) continue;
 
-if (price < 5 || price > 25) continue;
+if (price < 1 || price > 50) continue;
 
 const rsi = Math.floor(Math.random() * 40) + 40;
 const rvol = (Math.random() * 2 + 0.5).toFixed(1);
