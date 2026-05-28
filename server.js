@@ -6,7 +6,7 @@ const app = express();
 app.use(cors());
 app.use(express.static(__dirname));
 
-const API_KEY = "BURAYA_API_KEY";
+const API_KEY = "BURAYA_FINNHUB_API_KEY";
 
 const stocks = [
 "SOFI",
@@ -51,7 +51,8 @@ if (price < 5 || price > 22) {
 continue;
 }
 
-const rsi = Math.floor(Math.random() * 40) + 40;
+const rsi =
+Math.floor(Math.random() * 40) + 40;
 
 const rvol =
 (Math.random() * 2 + 0.5).toFixed(1);
@@ -65,7 +66,7 @@ const volume =
 const score =
 Math.floor(
 rsi +
-(rvol * 25) +
+(parseFloat(rvol) * 25) +
 rs
 );
 
@@ -81,7 +82,7 @@ score
 
 } catch (err) {
 
-console.log("ERROR:", symbol);
+console.log("ERROR:", symbol, err.message);
 
 }
 
@@ -101,8 +102,10 @@ results
 
 });
 
-app.listen(3000, () => {
+const PORT = process.env.PORT || 3000;
 
-console.log("SERVER RUNNING ON 3000");
+app.listen(PORT, () => {
+
+console.log(`SERVER RUNNING ON ${PORT}`);
 
 });
