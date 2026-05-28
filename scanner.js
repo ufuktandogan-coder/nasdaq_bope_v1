@@ -6,7 +6,7 @@ resultsDiv.innerHTML = "<h2>SCANNING...</h2>";
 
 try {
 
-const response = await fetch("http://localhost:3000/scan");
+response = await fetch("/scan");
 
 const data = await response.json();
 
