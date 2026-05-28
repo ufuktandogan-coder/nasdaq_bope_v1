@@ -45,30 +45,21 @@ const response = await fetch(
 
 const data = await response.json();
 
-const price = data.c || 0;
+const price = data.c;
 
-if (price < 5 || price > 22) {
-continue;
-}
+if (!price) continue;
 
-const rsi =
-Math.floor(Math.random() * 40) + 40;
+if (price < 5 || price > 25) continue;
 
-const rvol =
-(Math.random() * 2 + 0.5).toFixed(1);
-
-const rs =
-Math.floor(Math.random() * 60);
-
-const volume =
-(Math.random() * 300 + 10).toFixed(1);
+const rsi = Math.floor(Math.random() * 40) + 40;
+const rvol = (Math.random() * 2 + 0.5).toFixed(1);
+const rs = Math.floor(Math.random() * 60);
+const volume = (Math.random() * 300 + 10).toFixed(1);
 
 const score =
-Math.floor(
 rsi +
 (parseFloat(rvol) * 25) +
-rs
-);
+rs;
 
 results.push({
 symbol,
@@ -77,12 +68,12 @@ rsi,
 rvol,
 volume,
 rs,
-score
+score: Math.floor(score)
 });
 
 } catch (err) {
 
-console.log("ERROR:", symbol, err.message);
+console.log("ERROR:", symbol);
 
 }
 
@@ -106,6 +97,6 @@ const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
 
-console.log(`SERVER RUNNING ON ${PORT}`);
+console.log("SERVER RUNNING");
 
 });
