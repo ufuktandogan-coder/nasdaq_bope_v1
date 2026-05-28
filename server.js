@@ -42,41 +42,69 @@ const response = await fetch(
 `https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${API_KEY}`
 );
 
-const data = await response.json();
+const quote = await response.json();
 
-if (!data.c) continue;
+const price = quote.c;
+const previousClose = quote.pc;
 
-const price = data.c;
+if (!price || !previousClose) {
+continue;
+}
 
-if (price < 5 || price > 22) continue;
+const changePercent =
+((price - previousClose) / previousClose) * 100;
 
 const rsi =
-Math.floor(Math.random() * 35) + 40;
+Math.max(
+45,
+Math.floor(50 + (changePercent * 5))
+);
 
 const rvol =
-(Math.random() * 2 + 0.5).toFixed(1);
+(1 + Math.random() * 2).toFixed(1);
 
 const rs =
-Math.floor(Math.random() * 60);
+Math.max(
+40,
+Math.floor(50 + (changePercent * 10))
+);
 
 const volume =
-(Math.random() * 300 + 10).toFixed(1);
+(50 + Math.random() * 250).toFixed(1);
 
 const score =
 Math.floor(
 rsi +
-(rvol * 25) +
+(parseFloat(rvol) * 25) +
 rs
 );
 
 results.push({
+
 symbol,
+
 price: price.toFixed(2),
+
 rsi,
+
 rvol,
+
 volume,
+
 rs,
-score
+
+score,
+
+entry: (price * 1.02).toFixed(2),
+
+stop: (price * 0.95).toFixed(2),
+
+tp1: (price * 1.10).toFixed(2),
+
+tp2: (price * 1.20).toFixed(2),
+
+rr: "1:4.0"
+
 });
 
 } catch (err) {
@@ -90,16 +118,23 @@ console.log("ERROR:", symbol);
 results.sort((a, b) => b.score - a.score);
 
 res.json({
+
 scanned: stocks.length,
+
 passed: results.length,
+
 bestScore:
 results.length > 0
 ? results[0].score
 : 0,
+
 results
+
 });
 
 });
+
+app.use(express.static(__dirname));
 
 app.listen(3000, () => {
 
