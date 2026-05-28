@@ -6,7 +6,7 @@ const app = express();
 app.use(cors());
 app.use(express.static(__dirname));
 
-const API_KEY = "BURAYA_FINNHUB_API_KEY";
+const API_KEY = "d8b0oi9r01qk20sp60j0d";
 
 const stocks = [
 "SOFI",
