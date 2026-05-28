@@ -45,21 +45,32 @@ const response = await fetch(
 
 const data = await response.json();
 
+console.log(symbol, data);
+
 const price = data.c;
 
-if (!price) continue;
+if (!price || price <= 0) {
+continue;
+}
 
-if (price < 1 || price > 50) continue;
+const rsi =
+Math.floor(Math.random() * 30) + 50;
 
-const rsi = Math.floor(Math.random() * 40) + 40;
-const rvol = (Math.random() * 2 + 0.5).toFixed(1);
-const rs = Math.floor(Math.random() * 60);
-const volume = (Math.random() * 300 + 10).toFixed(1);
+const rvol =
+(Math.random() * 2 + 1).toFixed(1);
+
+const rs =
+Math.floor(Math.random() * 40) + 60;
+
+const volume =
+(Math.random() * 300 + 50).toFixed(1);
 
 const score =
+Math.floor(
 rsi +
 (parseFloat(rvol) * 25) +
-rs;
+rs
+);
 
 results.push({
 symbol,
@@ -68,18 +79,20 @@ rsi,
 rvol,
 volume,
 rs,
-score: Math.floor(score)
+score
 });
 
 } catch (err) {
 
-console.log("ERROR:", symbol);
+console.log("ERROR:", symbol, err.message);
 
 }
 
 }
 
 results.sort((a, b) => b.score - a.score);
+
+console.log("FINAL RESULTS:", results);
 
 res.json({
 scanned: stocks.length,
@@ -97,6 +110,6 @@ const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
 
-console.log("SERVER RUNNING");
+console.log(`SERVER RUNNING ON ${PORT}`);
 
 });
