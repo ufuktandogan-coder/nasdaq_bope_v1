@@ -65,6 +65,15 @@ volumeData.values
 .reduce((sum, day) => sum + parseInt(day.volume), 0) / 4;
 
 const rvol = (todayVolume / avgVolume).toFixed(2);
+const rvol = (todayvolume / avgVolume).toFixed(2);
+console.log (
+    symbol,
+    "RS :", rsi,
+    "TODAY:" , todayVolume,
+    "AVG:", avgVolume,
+    "RVOL:", rvol 
+
+) ;
 
 const volume =
 (todayVolume / 1000000).toFixed(1) + "M";
@@ -79,8 +88,8 @@ parseFloat(rvol) * 40
 
 // FILTER
 if (
-rsi < 50 ||
-parseFloat(rvol) < 1.0
+rsi < 40 ||
+parseFloat(rvol) < 0.5
 ) {
 continue;
 }
