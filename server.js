@@ -10,27 +10,8 @@ const PORT = process.env.PORT || 3000;
 
 const API_KEY = "9b341877fbe242ecba2aa8708b47f4ed";
 
-const stocks = [
-"SOFI",
-"PLTR",
-"QS",
-"ACHR",
-"JOBY",
-"SERV",
-"BTDR",
-"SMR",
-"MARA",
-"CLSK",
-"CHPT",
-"ENVX",
-"ARQQ",
-"RKLB",
-"IONQ",
-"SOUN",
-"OPEN",
-"RIOT",
-"HIMS"
-];
+const stocks = require("./universe");
+
 
 app.get("/scan", async (req, res) => {
 
@@ -66,13 +47,28 @@ if (!rsiData.values) continue;
 const rsi =
 parseFloat(rsiData.values[0].rsi);
 
-// RVOL
-const rvol =
-(Math.random() * 2 + 1).toFixed(1);
+// REAL VOLUME
 
-// VOLUME
+const volumeResponse = await fetch(
+`https://api.twelvedata.com/time_series?symbol=${symbol}&interval=1day&outputsize=5&apikey=${API_KEY}`
+);
+
+const volumeData = await volumeResponse.json();
+
+if (!volumeData.values) continue;
+
+const todayVolume = parseInt(volumeData.values[0].volume);
+
+const avgVolume =
+volumeData.values
+.slice(1, 5)
+.reduce((sum, day) => sum + parseInt(day.volume), 0) / 4;
+
+const rvol = (todayVolume / avgVolume).toFixed(2);
+
 const volume =
-(Math.random() * 300 + 20).toFixed(1) + "M";
+(todayVolume / 1000000).toFixed(1) + "M";
+
 
 // SCORE
 const score =

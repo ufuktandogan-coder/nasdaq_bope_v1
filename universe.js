@@ -56,3 +56,4 @@ const STOCK_UNIVERSE = [
 "TEM"
 
 ];
+module.exports = STOCK_UNIVERSE;
