@@ -79,8 +79,8 @@ parseFloat(rvol) * 40
 
 // FILTER
 if (
-rsi < 55 ||
-parseFloat(rvol) < 1.2
+rsi < 50 ||
+parseFloat(rvol) < 1.0
 ) {
 continue;
 }
